@@ -1,9 +1,6 @@
 package dev.nheggoe.assessment.four.backend;
 
-import javax.sound.sampled.Line;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,21 +9,23 @@ import java.util.Set;
  */
 public class DeckOfCards {
     private final Set<PlayingCard> deckOfCards;
-    // private final Map<>
 
     public DeckOfCards() {
         deckOfCards = new HashSet<>();
         initialDeck();
     }
-    
+
+    public Set<PlayingCard> getDeckOfCards() {
+        return deckOfCards;
+    }
+
     private void initialDeck() {
-        for (int suit = 0; suit < 4; suit++) {
-            for (int card = 0; i < 13; card++) {
-               continue;
-            } 
+        for (int suitIndex = 0; suitIndex < 4; suitIndex++) {
+            for (int cardIndex = 0; cardIndex < 13; cardIndex++) {
+                char suitChar = CardSuit.getSuit(suitIndex).getSuitChar();
+                deckOfCards.add(new PlayingCard(suitChar, cardIndex + 1));
+            }
         }
     }
 
-
-    
 }
