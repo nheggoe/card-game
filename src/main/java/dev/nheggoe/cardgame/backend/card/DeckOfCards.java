@@ -1,7 +1,9 @@
 package dev.nheggoe.cardgame.backend.card;
 
-import java.util.HashSet;
-import java.util.Set;
+import dev.nheggoe.cardgame.backend.util.CardUtility;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Nick Heggø
@@ -9,33 +11,37 @@ import java.util.Set;
  */
 public class DeckOfCards {
 
-    private final Set<PlayingCard> deckOfCards;
+    private final List<PlayingCard> deckOfCards;
 
     public DeckOfCards() {
-        deckOfCards = new HashSet<>();
+        deckOfCards = new ArrayList<>();
         initialDeck();
     }
 
     /**
-     * Retrieves a copy of the current deck of cards.
-     * The returned deck is a set of unique playing cards representing a standard deck.
+     * Draws a random card from the current deck of cards and removes it from the deck.
+     * The card is randomly selected from the remaining cards in the deck.
      *
-     * @return a copy of the deck of cards as a Set of PlayingCard objects
+     * @return the randomly drawn card of type {@code PlayingCard}
      */
-    public Set<PlayingCard> getDeckOfCards() {
-        return new HashSet<>(deckOfCards);
+    public PlayingCard drawNextRandomCard() {
+        int availableCards = deckOfCards.size();
+        int randomIndex = CardUtility.drawRandomCardNumber(availableCards);
+        return deckOfCards.remove(randomIndex);
+    }
+
+    public int getRemainingCardCount() {
+        return deckOfCards.size();
     }
 
     /**
      * Create a fresh new 52-card deck.
      */
     private void initialDeck() {
-        for (int suitIndex = 0; suitIndex < 4; suitIndex++) {
-            for (int cardIndex = 0; cardIndex < 13; cardIndex++) {
-                char suitChar = CardSuit.getSuit(suitIndex).getSuitChar();
-                deckOfCards.add(new PlayingCard(suitChar, cardIndex + 1));
+        for (CardSuit suit : CardSuit.values()) {
+            for (CardRank rank : CardRank.values()) {
+                deckOfCards.add(new PlayingCard(suit, rank));
             }
         }
     }
-
 }
