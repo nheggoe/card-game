@@ -12,7 +12,7 @@ class PlayingCardTest {
         var fiveOfClubs = new PlayingCard(CardSuit.CLUBS, CardRank.FIVE);
         String expectedDiamonds = "D1";
         String expectedClub = "C5";
-        assertEquals(expectedDiamonds, aceOfDiamonds.getAsString());
-        assertEquals(expectedClub, fiveOfClubs.getAsString());
+        assertEquals(expectedDiamonds, aceOfDiamonds.getCardRepresentation());
+        assertEquals(expectedClub, fiveOfClubs.getCardRepresentation());
     }
 }

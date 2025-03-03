@@ -1,5 +1,6 @@
 package dev.nheggoe.cardgame.backend.engine;
 
+import dev.nheggoe.cardgame.backend.card.DeckOfCards;
 import dev.nheggoe.cardgame.backend.hand.Hand;
 
 import java.util.logging.Level;
@@ -14,6 +15,7 @@ public class CardGameEngine {
     private static final Logger LOGGER = Logger.getLogger(CardGameEngine.class.getName());
     private static boolean running;
 
+    private static DeckOfCards deckOfCards;
     private static Hand hand;
 
     /**
@@ -29,6 +31,7 @@ public class CardGameEngine {
      */
     public void run() {
         running = true;
+        newPlayer();
         engine();
     }
 
@@ -46,11 +49,14 @@ public class CardGameEngine {
     }
 
     private void newPlayer() {
+        deckOfCards = new DeckOfCards();
         hand = new Hand();
     }
 
     private void dealHands(int numberOfCards) {
-        // hand.addCard();
+        for (int i = 0; i < numberOfCards; i++) {
+            hand.addCard(deckOfCards.drawNextRandomCard());
+        }
     }
 
 }

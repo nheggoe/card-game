@@ -16,7 +16,7 @@ public record PlayingCard(CardSuit suit, CardRank rank) {
      *
      * @return the suit and rank of the card as a string
      */
-    public String getAsString() {
+    public String getCardRepresentation() {
         return String.format("%s%s", suit.getSuitChar(), rank.getRankSymbol());
     }
 
