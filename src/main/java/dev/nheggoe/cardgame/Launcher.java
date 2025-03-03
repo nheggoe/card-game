@@ -1,4 +1,4 @@
-package dev.nheggoe.assessment.four;
+package dev.nheggoe.cardgame;
 
 /**
  * @author Nick Heggø

@@ -1,6 +1,9 @@
-package dev.nheggoe.assessment.four.backend;
+package dev.nheggoe.cardgame.backend;
 
+import dev.nheggoe.cardgame.backend.playingcard.DeckOfCards;
+import dev.nheggoe.cardgame.backend.playingcard.PlayingCard;
 import org.junit.jupiter.api.Test;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,6 +17,10 @@ class DeckOfCardsTest {
     void assertCompletePlayingCardDeck() {
         var cardDeck = new DeckOfCards().getDeckOfCards();
         assertEquals(52, cardDeck.size());
+        assertEquals(13, cardDeck.stream()
+                .map(PlayingCard::getFace)
+                .distinct()
+                .count());
     }
 
 }

@@ -1,4 +1,4 @@
-package dev.nheggoe.assessment.four.javafx;
+package dev.nheggoe.cardgame.frontend;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

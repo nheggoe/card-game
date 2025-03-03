@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.nheggoe</groupId>
-    <artifactId>oblig4</artifactId>
+    <artifactId>card-game</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -35,7 +35,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>dev.nheggoe.assessment.four.Launcher</mainClass>
+                    <mainClass>dev.nheggoe.cardgame.Launcher</mainClass>
                 </configuration>
             </plugin>
         </plugins>

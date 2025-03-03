@@ -1,4 +1,4 @@
-package dev.nheggoe.assessment.four.backend;
+package dev.nheggoe.cardgame.backend.playingcard;
 
 import java.util.HashSet;
 import java.util.Set;
