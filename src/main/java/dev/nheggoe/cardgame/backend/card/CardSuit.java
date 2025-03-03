@@ -1,46 +1,32 @@
 package dev.nheggoe.cardgame.backend.card;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Represents the four suits of a standard deck of playing cards.
- * Each suit is assigned an index for reference.
+ *
+ * @author Nick Heggø
+ * @version 2025.03.03
  */
 public enum CardSuit {
-    HEARTS(0, 'H'),
-    DIAMONDS(1, 'D'),
-    CLUBS(2, 'C'),
-    SPADES(3, 'S');
 
-    private final int index;
+    HEARTS('H'),
+    DIAMONDS('D'),
+    CLUBS('C'),
+    SPADES('S');
+
     private final char suitChar;
-    private static final Map<Integer, CardSuit> suitMap = new HashMap<>();
 
-    CardSuit(int index, char suitChar) {
-        this.index = index;
+    CardSuit(char suitChar) {
         this.suitChar = suitChar;
     }
 
     /**
-     * Retrieves the card suit corresponding to the given index.
+     * Retrieves the character representing the suit of the card.
+     * The suit character corresponds to the abbreviations of the card suits,
+     * such as 'H' for Hearts, 'D' for Diamonds, 'C' for Clubs, and 'S' for Spades.
      *
-     * @param index The index of the card suit to retrieve.
-     * @return The card suit associated with the specified index,
-     * or null if no suit exists for the given index.
+     * @return the character representing the card suit
      */
-    public static CardSuit getSuit(int index) {
-        return suitMap.get(index);
-    }
-
-    static {
-        for (CardSuit suit : CardSuit.values()) {
-            suitMap.put(suit.index, suit);
-        }
-    }
-
     public char getSuitChar() {
         return suitChar;
     }
-
 }

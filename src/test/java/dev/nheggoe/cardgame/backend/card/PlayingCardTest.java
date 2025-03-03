@@ -2,7 +2,7 @@ package dev.nheggoe.cardgame.backend.card;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PlayingCardTest {
 
@@ -14,10 +14,5 @@ class PlayingCardTest {
         String expectedClub = "C5";
         assertEquals(expectedDiamonds, aceOfDiamonds.getAsString());
         assertEquals(expectedClub, fiveOfClubs.getAsString());
-    }
-
-    @Test
-    void testToString() {
-        System.out.println(new PlayingCard(CardSuit.CLUBS, CardRank.FIVE));
     }
 }

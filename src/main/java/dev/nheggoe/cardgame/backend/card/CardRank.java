@@ -36,6 +36,6 @@ public enum CardRank {
      * @return the symbol of the card rank as a string
      */
     public String getRankSymbol() {
-        return this.rankSymbol;
+        return rankSymbol;
     }
 }
