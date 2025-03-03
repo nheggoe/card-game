@@ -1,4 +1,4 @@
-package dev.nheggoe.cardgame.backend.playingcard;
+package dev.nheggoe.cardgame.backend.card;
 
 /**
  * Represents a playing card. A playing card has a number (face) between

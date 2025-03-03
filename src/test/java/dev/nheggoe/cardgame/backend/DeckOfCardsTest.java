@@ -1,7 +1,7 @@
 package dev.nheggoe.cardgame.backend;
 
-import dev.nheggoe.cardgame.backend.playingcard.DeckOfCards;
-import dev.nheggoe.cardgame.backend.playingcard.PlayingCard;
+import dev.nheggoe.cardgame.backend.card.DeckOfCards;
+import dev.nheggoe.cardgame.backend.card.PlayingCard;
 import org.junit.jupiter.api.Test;
 
 

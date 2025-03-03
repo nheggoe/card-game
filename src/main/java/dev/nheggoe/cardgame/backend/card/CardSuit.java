@@ -1,4 +1,4 @@
-package dev.nheggoe.cardgame.backend.playingcard;
+package dev.nheggoe.cardgame.backend.card;
 
 import java.util.HashMap;
 import java.util.Map;
