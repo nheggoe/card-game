@@ -1,48 +1,41 @@
 package dev.nheggoe.cardgame.backend.card;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
+ * Represents the rank of a playing card in a standard deck.
+ * A card rank can have values ranging from Ace ("1") to King ("K").
+ * Each rank is associated with a specific symbol that represents it.
+ *
  * @author Nick Heggø
- * @version 2025.02.26
+ * @version 2025.03.03
  */
 public enum CardRank {
-    ACE(0),
-    TWO(1),
-    THREE(2),
-    FOUR(3),
-    FIVE(4),
-    SIX(5),
-    SEVEN(6),
-    EIGHT(7),
-    NINE(8),
-    TEN(9),
-    JACK(10),
-    QUEEN(11),
-    KING(12);
 
-    private final int index;
-    private static final Map<Integer, CardRank> cardRankMap = new HashMap<>();
+    ACE("1"),
+    TWO("2"),
+    THREE("3"),
+    FOUR("4"),
+    FIVE("5"),
+    SIX("6"),
+    SEVEN("7"),
+    EIGHT("8"),
+    NINE("9"),
+    TEN("10"),
+    JACK("J"),
+    QUEEN("Q"),
+    KING("K");
 
-    static {
-        for (CardRank rank : CardRank.values()) {
-            cardRankMap.put(rank.index, rank);
-        }
-    }
+    private final String rankSymbol;
 
-    CardRank(int index) {
-        this.index = index;
+    CardRank(String rankSymbol) {
+        this.rankSymbol = rankSymbol;
     }
 
     /**
-     * Retrieves the card rank corresponding to the given index.
+     * Retrieves the symbol representing the rank of the card.
      *
-     * @param index The index of the card rank to retrieve.
-     * @return The card rank associated with the specified index,
-     * or null if no rank exists for the given index.
+     * @return the symbol of the card rank as a string
      */
-    public static CardRank getCardRank(int index) {
-        return cardRankMap.get(index);
+    public String getRankSymbol() {
+        return this.rankSymbol;
     }
 }

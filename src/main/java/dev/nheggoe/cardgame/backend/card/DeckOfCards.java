@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represents a deck of playing cards.
+ * This class provides methods to manage a standard 52-card deck, including
+ * initializing the deck, drawing cards randomly, and checking the remaining card count.
+ *
  * @author Nick Heggø
- * @version 2025.02.26
+ * @version 2025.03.03
  */
 public class DeckOfCards {
 
@@ -30,6 +34,11 @@ public class DeckOfCards {
         return deckOfCards.remove(randomIndex);
     }
 
+    /**
+     * Retrieves the count of remaining cards in the deck.
+     *
+     * @return the number of cards currently present in the deck
+     */
     public int getRemainingCardCount() {
         return deckOfCards.size();
     }
