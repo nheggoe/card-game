@@ -64,4 +64,8 @@ public class Hand {
 
         return suitCounts.values().stream().anyMatch(count -> count >= 5);
     }
+
+    public int getHandSize() {
+        return hand.size();
+    }
 }

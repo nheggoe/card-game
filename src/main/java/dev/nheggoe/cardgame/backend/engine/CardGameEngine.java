@@ -43,6 +43,10 @@ public class CardGameEngine {
         }
     }
 
+    public int getHandSide() {
+        return hand.getHandSize();
+    }
+
     /**
      * Checks if the current hand of cards forms a flush.
      * A flush occurs when five cards in the hand are of the same suit.

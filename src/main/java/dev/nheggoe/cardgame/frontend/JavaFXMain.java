@@ -1,6 +1,5 @@
 package dev.nheggoe.cardgame.frontend;
 
-import dev.nheggoe.cardgame.backend.card.PlayingCard;
 import dev.nheggoe.cardgame.backend.engine.CardGameEngine;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -10,14 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,7 +32,6 @@ public class JavaFXMain extends Application {
     private TextField cardsOfHeartsField;
     private TextField flushField;
     private TextField queenOfSpadesFields;
-    private List<PlayingCard> currentHand = new ArrayList<>();
 
     public static void main(String[] args) {
         launch();
@@ -60,26 +55,19 @@ public class JavaFXMain extends Application {
         rightPanel.setAlignment(Pos.TOP_CENTER);
 
         Button dealHandButton = new Button("Deal Hand");
-        dealHandButton.setOnAction(event -> {
-            LOGGER.log(Level.INFO, "Dealing %d cards!".formatted(1));
-            engine.drawCards(1);
+        dealHandButton.setOnAction(e -> {
+            dealCards();
         });
 
         Button checkHandButton = new Button("Check Hand");
-        checkHandButton.setOnAction(event -> {
-            LOGGER.log(Level.INFO, "Checking hand...");
-            if (engine.isFlush()) {
-                LOGGER.log(Level.INFO, "-------- Flush! ---------");
-                var root2 = new VBox();
-                root2.getChildren().add(new TilePane());
+        checkHandButton.setOnAction(e -> checkHand());
 
-            }
-        });
+        rightPanel.getChildren().addAll(dealHandButton, checkHandButton);
+        root.setRight(rightPanel);
 
-        root.getChildren().addAll(dealHandButton, checkHandButton);
-
-        primaryStage.setScene(new Scene(root));
-
+        Scene scene = new Scene(root, 700, 500);
+        primaryStage.setTitle("Flush Card Game");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
@@ -93,10 +81,21 @@ public class JavaFXMain extends Application {
     }
 
     private void checkHand() {
-        flushField.setText(engine.isFlush() ? "Yes" : "No");
+        boolean hasFlush = engine.isFlush();
+        if (hasFlush) {
+            LOGGER.log(Level.INFO, "-------- Flush! ---------");
+        }
+        // flushField.setText(hasFlush ? "Yes" : "No");
     }
 
-    private void dealCard() {
-
+    private void dealCards() {
+        int cardsToDraw;
+        if (engine.getHandSide() == 0) {
+            cardsToDraw = 5;
+        } else {
+            cardsToDraw = 1;
+        }
+        engine.drawCards(cardsToDraw);
+        LOGGER.log(Level.INFO, "Drawn %d cards!".formatted(cardsToDraw));
     }
 }
