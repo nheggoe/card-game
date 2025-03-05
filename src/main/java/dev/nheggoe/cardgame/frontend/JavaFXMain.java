@@ -31,9 +31,13 @@ public class JavaFXMain extends Application {
     private static final CardGameEngine engine = new CardGameEngine();
 
     // --------------- UI ----------------------
+    private final BorderPane root = new BorderPane();
+    private final VBox rightPanel = new VBox(20);
     private FlowPane cardDisplayArea;
-    private TextField sumOfFacesFields;
-    private TextField cardsOfHeartsField;
+    private GridPane bottomPanel;
+
+    private TextField remainingCardField;
+    private TextField flushCountField;
     private TextField flushField;
     private TextField queenOfSpadesFields;
 
@@ -43,24 +47,22 @@ public class JavaFXMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        var root = new BorderPane();
         root.setPadding(new Insets(20));
 
         initCardDisplayArea();
+        initBottomPanel();
 
         Text placeholderText = new Text("------ Place Holder ------");
         placeholderText.setFill(Color.GRAY);
         cardDisplayArea.getChildren().add(placeholderText);
 
-        root.setCenter(cardDisplayArea);
-
-        VBox rightPanel = new VBox(20);
         rightPanel.setPadding(new Insets(10));
         rightPanel.setAlignment(Pos.TOP_CENTER);
 
         Button dealHandButton = new Button("Deal Hand");
         dealHandButton.setOnAction(e -> {
             dealCards();
+            updateCardCount();
             updateCardView();
             root.setCenter(cardDisplayArea);
         });
@@ -71,24 +73,16 @@ public class JavaFXMain extends Application {
         });
 
         rightPanel.getChildren().addAll(dealHandButton, checkHandButton);
-        root.setRight(rightPanel);
 
-        GridPane bottomPanel = new GridPane();
-        bottomPanel.setHgap(10);
-        bottomPanel.setVgap(10);
-        bottomPanel.setPadding(new Insets(20, 0, 0, 0));
+        Label remainingCardLabel = new Label("Card Stock:");
+        remainingCardField = new TextField("%d".formatted(engine.getRemainingCardCount()));
+        remainingCardField.setEditable(false);
+        remainingCardField.setPrefWidth(80);
 
-        Label sumOfFacesLabel = new Label("Sum of the faces: ");
-        // FIXME
-        sumOfFacesFields = new TextField("25");
-        sumOfFacesFields.setEditable(false);
-        sumOfFacesFields.setPrefWidth(80);
-
-        Label cardsOfHeartsLabel = new Label("Cards of hearts:");
-        // FIXME
-        cardsOfHeartsField = new TextField();
-        cardsOfHeartsField.setEditable(false);
-        cardsOfHeartsField.setPrefWidth(150);
+        Label flushCountLabel = new Label("Flush count:");
+        flushCountField = new TextField("%d".formatted(engine.getFlushCount()));
+        flushCountField.setEditable(false);
+        flushCountField.setPrefWidth(150);
 
         Label flushLabel = new Label("Flush:");
         flushField = new TextField("Yes/NO");
@@ -100,21 +94,49 @@ public class JavaFXMain extends Application {
         queenOfSpadesFields.setEditable(false);
         queenOfSpadesFields.setPrefWidth(80);
 
-        bottomPanel.add(sumOfFacesLabel, 0, 0);
-        bottomPanel.add(sumOfFacesFields, 1, 0);
-        bottomPanel.add(cardsOfHeartsLabel, 2, 0);
-        bottomPanel.add(cardsOfHeartsField, 3, 0);
+        bottomPanel.add(remainingCardLabel, 0, 0);
+        bottomPanel.add(remainingCardField, 1, 0);
+
+        bottomPanel.add(flushCountLabel, 2, 0);
+        bottomPanel.add(flushCountField, 3, 0);
+
         bottomPanel.add(flushLabel, 0, 1);
         bottomPanel.add(flushField, 1, 1);
-        bottomPanel.add(queenOfSpacesLabel, 2, 1);
-        bottomPanel.add(queenOfSpadesFields, 3, 1);
+        // bottomPanel.add(queenOfSpacesLabel, 2, 1);
+        // bottomPanel.add(queenOfSpadesFields, 3, 1);
 
-        root.setBottom(bottomPanel);
-
+        updateComponents();
         Scene scene = new Scene(root, 700, 500);
         primaryStage.setTitle("Flush Card Game");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void initBottomPanel() {
+        bottomPanel = new GridPane();
+        bottomPanel.setHgap(10);
+        bottomPanel.setVgap(10);
+        bottomPanel.setPadding(new Insets(20, 0, 0, 0));
+    }
+
+    private void updateComponents() {
+        root.setCenter(cardDisplayArea);
+        root.setBottom(bottomPanel);
+        root.setRight(rightPanel);
+    }
+
+    private void updateCardCount() {
+        remainingCardField = new TextField("%d".formatted(engine.getRemainingCardCount()));
+        LOGGER.log(Level.INFO, "There are %d cards remaining.".formatted(engine.getRemainingCardCount()));
+        remainingCardField.setEditable(false);
+        remainingCardField.setPrefWidth(80);
+        bottomPanel.add(remainingCardField, 1, 0);
+    }
+
+    private void updateFlushCount() {
+        flushCountField = new TextField("%d".formatted(engine.getFlushCount()));
+        flushCountField.setEditable(false);
+        flushCountField.setPrefWidth(150);
     }
 
     private void initCardDisplayArea() {
@@ -150,9 +172,8 @@ public class JavaFXMain extends Application {
         var hand = engine.getHand();
         initCardDisplayArea();
         hand.getHand().forEach(card -> {
-                    cardDisplayArea.getChildren().add(createCardView(card));
-                }
-        );
+            cardDisplayArea.getChildren().add(createCardView(card));
+        });
     }
 
     private Pane createCardView(PlayingCard card) {

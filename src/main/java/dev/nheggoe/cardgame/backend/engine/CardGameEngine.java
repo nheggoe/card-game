@@ -11,6 +11,7 @@ public class CardGameEngine {
 
     private static DeckOfCards deckOfCards;
     private static Hand hand;
+    private static int flushCount;
 
     /**
      * Default constructor
@@ -28,6 +29,7 @@ public class CardGameEngine {
     public void startNewGame() {
         deckOfCards = new DeckOfCards();
         hand = new Hand();
+        flushCount = 0;
     }
 
     /**
@@ -54,6 +56,9 @@ public class CardGameEngine {
      * @return true if the hand contains a flush, false otherwise
      */
     public boolean isFlush() {
+        if (hand.isFlush()) {
+            flushCount++;
+        }
         return hand.isFlush();
     }
 
@@ -66,5 +71,13 @@ public class CardGameEngine {
      */
     public Hand getHand() {
         return hand;
+    }
+
+    public int getRemainingCardCount() {
+        return deckOfCards.getRemainingCardCount();
+    }
+
+    public int getFlushCount() {
+        return flushCount;
     }
 }
