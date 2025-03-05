@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 public class JavaFXMain extends Application {
 
     private static final Logger LOGGER = Logger.getLogger(JavaFXMain.class.getName());
+    private static final CardGameEngine engine = new CardGameEngine();
 
     // --------------- UI ----------------------
     private FlowPane cardDisplayArea;
@@ -43,17 +44,10 @@ public class JavaFXMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        CardGameEngine engine = new CardGameEngine();
         var root = new BorderPane();
         root.setPadding(new Insets(20));
 
-        // Create the card display area
-        cardDisplayArea = new FlowPane();
-        cardDisplayArea.setPrefSize(500, 300);
-        cardDisplayArea.setPadding(new Insets(10));
-        cardDisplayArea.setHgap(10);
-        cardDisplayArea.setVgap(10);
-        cardDisplayArea.setAlignment(Pos.CENTER);
+        initCardDisplayArea();
 
         Text placeholderText = new Text("------ Place Holder ------");
         placeholderText.setFill(Color.GRAY);
@@ -87,5 +81,22 @@ public class JavaFXMain extends Application {
         primaryStage.setScene(new Scene(root));
 
         primaryStage.show();
+    }
+
+    private void initCardDisplayArea() {
+        cardDisplayArea = new FlowPane();
+        cardDisplayArea.setPrefSize(500, 300);
+        cardDisplayArea.setPadding(new Insets(10));
+        cardDisplayArea.setHgap(10);
+        cardDisplayArea.setVgap(10);
+        cardDisplayArea.setAlignment(Pos.CENTER);
+    }
+
+    private void checkHand() {
+        flushField.setText(engine.isFlush() ? "Yes" : "No");
+    }
+
+    private void dealCard() {
+
     }
 }
