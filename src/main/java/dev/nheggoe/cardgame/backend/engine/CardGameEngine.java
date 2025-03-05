@@ -40,6 +40,10 @@ public class CardGameEngine {
      * @param numberOfCards the number of cards to be dealt to the hand
      */
     public void drawCards(int numberOfCards) {
+        if (deckOfCards.getRemainingCardCount() <= 0) {
+            throw new IllegalStateException("You're out of card!");
+        }
+
         for (int i = 0; i < numberOfCards; i++) {
             hand.addCard(deckOfCards.drawNextRandomCard());
         }
@@ -47,6 +51,10 @@ public class CardGameEngine {
 
     public int getHandSide() {
         return hand.getHandSize();
+    }
+
+    public void newHand() {
+        hand = new Hand();
     }
 
     /**

@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -39,7 +40,6 @@ public class JavaFXMain extends Application {
     private TextField remainingCardField;
     private TextField flushCountField;
     private TextField flushField;
-    private TextField queenOfSpadesFields;
 
     public static void main(String[] args) {
         launch();
@@ -61,16 +61,15 @@ public class JavaFXMain extends Application {
 
         Button dealHandButton = new Button("Deal Hand");
         dealHandButton.setOnAction(e -> {
-            dealCards();
+            dealHand();
             updateCardCount();
             updateCardView();
+            updateFlushCount();
             root.setCenter(cardDisplayArea);
         });
 
         Button checkHandButton = new Button("Check Hand");
-        checkHandButton.setOnAction(e -> {
-            checkHand();
-        });
+        checkHandButton.setOnAction(e -> checkHand());
 
         rightPanel.getChildren().addAll(dealHandButton, checkHandButton);
 
@@ -89,11 +88,6 @@ public class JavaFXMain extends Application {
         flushField.setEditable(false);
         flushField.setPrefWidth(80);
 
-        Label queenOfSpacesLabel = new Label("Queen of spades:");
-        queenOfSpadesFields = new TextField("Yes/NO");
-        queenOfSpadesFields.setEditable(false);
-        queenOfSpadesFields.setPrefWidth(80);
-
         bottomPanel.add(remainingCardLabel, 0, 0);
         bottomPanel.add(remainingCardField, 1, 0);
 
@@ -102,8 +96,6 @@ public class JavaFXMain extends Application {
 
         bottomPanel.add(flushLabel, 0, 1);
         bottomPanel.add(flushField, 1, 1);
-        // bottomPanel.add(queenOfSpacesLabel, 2, 1);
-        // bottomPanel.add(queenOfSpadesFields, 3, 1);
 
         updateComponents();
         Scene scene = new Scene(root, 700, 500);
@@ -156,14 +148,24 @@ public class JavaFXMain extends Application {
         flushField.setText(hasFlush ? "Yes" : "No");
     }
 
-    private void dealCards() {
+    private void dealHand() {
+        engine.newHand();
         int cardsToDraw;
         if (engine.getHandSide() == 0) {
             cardsToDraw = 5;
         } else {
             cardsToDraw = 1;
         }
-        engine.drawCards(cardsToDraw);
+        try {
+            engine.drawCards(cardsToDraw);
+        } catch (IllegalStateException e) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Game Result");
+            alert.setHeaderText(engine.getFlushCount() == 0 ? "No flush this time :(" : "You have a flush!");
+            alert.setContentText("Would you like to play again?");
+            alert.showAndWait().ifPresent(buttonType -> engine.startNewGame());
+
+        }
         LOGGER.log(Level.INFO, "Drawn %d cards!".formatted(cardsToDraw));
 
     }
@@ -171,9 +173,7 @@ public class JavaFXMain extends Application {
     private void updateCardView() {
         var hand = engine.getHand();
         initCardDisplayArea();
-        hand.getHand().forEach(card -> {
-            cardDisplayArea.getChildren().add(createCardView(card));
-        });
+        hand.getHand().forEach(card -> cardDisplayArea.getChildren().add(createCardView(card)));
     }
 
     private Pane createCardView(PlayingCard card) {
