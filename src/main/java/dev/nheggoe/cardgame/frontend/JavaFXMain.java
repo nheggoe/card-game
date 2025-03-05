@@ -62,7 +62,7 @@ public class JavaFXMain extends Application {
         Button dealHandButton = new Button("Deal Hand");
         dealHandButton.setOnAction(event -> {
             LOGGER.log(Level.INFO, "Dealing %d cards!".formatted(1));
-            engine.dealHands(1);
+            engine.drawCards(1);
         });
 
         Button checkHandButton = new Button("Check Hand");

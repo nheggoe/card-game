@@ -16,20 +16,39 @@ public class CardGameEngine {
      * Default constructor
      */
     public CardGameEngine() {
-        newPlayer();
+        startNewGame();
     }
 
-    public void newPlayer() {
+    /**
+     * Initializes and starts a new game by resetting the deck of cards
+     * and the player's hand.
+     * A new deck of cards is created, and the player's
+     * hand is cleared to prepare for gameplay.
+     */
+    public void startNewGame() {
         deckOfCards = new DeckOfCards();
         hand = new Hand();
     }
 
-    public void dealHands(int numberOfCards) {
+    /**
+     * Deals a specified number of cards from the deck to the hand.
+     * This method draws random cards from the current deck and adds them
+     * to the player's hand.
+     *
+     * @param numberOfCards the number of cards to be dealt to the hand
+     */
+    public void drawCards(int numberOfCards) {
         for (int i = 0; i < numberOfCards; i++) {
             hand.addCard(deckOfCards.drawNextRandomCard());
         }
     }
 
+    /**
+     * Checks if the current hand of cards forms a flush.
+     * A flush occurs when five cards in the hand are of the same suit.
+     *
+     * @return true if the hand contains a flush, false otherwise
+     */
     public boolean isFlush() {
         return hand.isFlush();
     }
