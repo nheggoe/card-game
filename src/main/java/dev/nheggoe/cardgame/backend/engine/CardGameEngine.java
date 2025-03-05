@@ -56,4 +56,15 @@ public class CardGameEngine {
     public boolean isFlush() {
         return hand.isFlush();
     }
+
+    /**
+     * Retrieves the player's current hand of cards.
+     * The hand consists of the cards dealt and managed during the game.
+     * This includes cards added through operations such as drawing from the deck.
+     *
+     * @return the current hand of cards
+     */
+    public Hand getHand() {
+        return hand;
+    }
 }

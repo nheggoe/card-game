@@ -1,5 +1,7 @@
 package dev.nheggoe.cardgame.frontend;
 
+import dev.nheggoe.cardgame.backend.card.CardSuit;
+import dev.nheggoe.cardgame.backend.card.PlayingCard;
 import dev.nheggoe.cardgame.backend.engine.CardGameEngine;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -8,11 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -57,10 +59,16 @@ public class JavaFXMain extends Application {
         rightPanel.setAlignment(Pos.TOP_CENTER);
 
         Button dealHandButton = new Button("Deal Hand");
-        dealHandButton.setOnAction(e -> dealCards());
+        dealHandButton.setOnAction(e -> {
+            dealCards();
+            updateCardView();
+            root.setCenter(cardDisplayArea);
+        });
 
         Button checkHandButton = new Button("Check Hand");
-        checkHandButton.setOnAction(e -> checkHand());
+        checkHandButton.setOnAction(e -> {
+            checkHand();
+        });
 
         rightPanel.getChildren().addAll(dealHandButton, checkHandButton);
         root.setRight(rightPanel);
@@ -135,5 +143,38 @@ public class JavaFXMain extends Application {
         }
         engine.drawCards(cardsToDraw);
         LOGGER.log(Level.INFO, "Drawn %d cards!".formatted(cardsToDraw));
+
+    }
+
+    private void updateCardView() {
+        var hand = engine.getHand();
+        initCardDisplayArea();
+        hand.getHand().forEach(card -> {
+                    cardDisplayArea.getChildren().add(createCardView(card));
+                }
+        );
+    }
+
+    private Pane createCardView(PlayingCard card) {
+        Pane cardPane = new Pane();
+        cardPane.setPrefSize(80, 120);
+
+        Rectangle cardBg = new Rectangle(0, 0, 80, 120);
+        cardBg.setFill(Color.WHITE);
+        cardBg.setStroke(Color.BLACK);
+        cardBg.setArcWidth(10);
+        cardBg.setArcHeight(10);
+
+        Text rankText = new Text(10, 30, card.getCardRepresentation());
+        rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+
+        if (card.suit() == CardSuit.HEARTS || card.suit() == CardSuit.DIAMONDS) {
+            rankText.setFill(Color.RED);
+        } else {
+            rankText.setFill(Color.BLACK);
+        }
+        cardPane.getChildren().addAll(cardBg, rankText);
+        return cardPane;
+
     }
 }

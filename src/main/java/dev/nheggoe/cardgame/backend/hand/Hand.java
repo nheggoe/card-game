@@ -68,4 +68,8 @@ public class Hand {
     public int getHandSize() {
         return hand.size();
     }
+
+    public Set<PlayingCard> getHand() {
+        return new HashSet<>(hand);
+    }
 }
