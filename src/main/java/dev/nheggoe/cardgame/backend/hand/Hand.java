@@ -30,6 +30,14 @@ public class Hand {
   }
 
   /**
+   * Removes all cards from the current hand, effectively clearing it.
+   * This operation resets the hand to an empty state, preparing it for new cards to be added.
+   */
+  public void clear() {
+    cards.clear();
+  }
+
+  /**
    * Add PlayingCard into the hand.
    *
    * @param card the card that will be added to the hand.
@@ -92,15 +100,6 @@ public class Hand {
   public boolean isQueenOfSpadesPresent() {
     var queenOfSpades = new PlayingCard(CardSuit.SPADES, CardRank.QUEEN);
     return cards.stream().anyMatch(card -> card.equals(queenOfSpades));
-  }
-
-  /**
-   * Retrieves the number of cards currently in the hand.
-   *
-   * @return the total count of cards in the hand
-   */
-  public int getHandSize() {
-    return cards.size();
   }
 
   /**

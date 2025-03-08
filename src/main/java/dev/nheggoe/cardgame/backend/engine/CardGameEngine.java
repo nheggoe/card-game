@@ -14,9 +14,9 @@ import dev.nheggoe.cardgame.backend.hand.Hand;
  */
 public class CardGameEngine {
 
-  private static DeckOfCards deckOfCards;
-  private static Hand hand;
-  private static int flushCount;
+  private final DeckOfCards deckOfCards;
+  private final Hand hand;
+  private int flushCount = 0;
 
   /**
    * Constructs a new instance of the {@code CardGameEngine} class. This constructor automatically
@@ -24,7 +24,8 @@ public class CardGameEngine {
    * clears the player's hand, and starts a fresh game session.
    */
   public CardGameEngine() {
-    startNewGame();
+    deckOfCards = new DeckOfCards();
+    hand = new Hand();
   }
 
   /**
@@ -32,8 +33,8 @@ public class CardGameEngine {
    * deck of cards is created, and the player's hand is cleared to prepare for gameplay.
    */
   public void startNewGame() {
-    deckOfCards = new DeckOfCards();
-    hand = new Hand();
+    deckOfCards.resetDeck();
+    hand.clear();
     flushCount = 0;
   }
 
@@ -62,15 +63,6 @@ public class CardGameEngine {
    */
   public int getHandValue() {
     return hand.getHandValue();
-  }
-
-  /**
-   * Resets the player's hand by creating a new instance of the {@code Hand} class. This method
-   * effectively clears the current set of cards in the hand, preparing it for new cards to be
-   * dealt.
-   */
-  public void newHand() {
-    hand = new Hand();
   }
 
   /**

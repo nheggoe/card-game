@@ -6,7 +6,6 @@ import dev.nheggoe.cardgame.backend.engine.CardGameEngine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -34,8 +33,6 @@ import javafx.stage.Stage;
  * @version 2025.03.08
  */
 public class CardGameMain extends Application {
-
-  private static final Logger LOGGER = Logger.getLogger(CardGameMain.class.getName());
 
   private final CardGameEngine engine;
   private final BorderPane root;
@@ -199,7 +196,7 @@ public class CardGameMain extends Application {
   }
 
   private void dealHand() {
-    engine.newHand();
+    engine.getHand().clear();
     try {
       engine.drawCards(5);
     } catch (IllegalStateException e) {
