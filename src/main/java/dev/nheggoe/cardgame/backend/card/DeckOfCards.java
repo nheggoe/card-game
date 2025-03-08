@@ -16,6 +16,11 @@ public class DeckOfCards {
 
   private final List<PlayingCard> deckOfCards;
 
+  /**
+   * Constructs a new instance of the {@code DeckOfCards} class. This initializes the deck to
+   * contain a full standard 52-card set with all ranks and suits. The cards are internally
+   * organized in a predefined order and can be manipulated or drawn as needed for gameplay.
+   */
   public DeckOfCards() {
     deckOfCards = new ArrayList<>();
     initialDeck();

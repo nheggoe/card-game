@@ -4,6 +4,11 @@ import dev.nheggoe.cardgame.backend.card.DeckOfCards;
 import dev.nheggoe.cardgame.backend.hand.Hand;
 
 /**
+ * The CardGameEngine class provides the core functionalities required to manage a card game. It
+ * includes the ability to handle the deck of cards, manage the player's hand, determine specific
+ * card combinations like a flush, and track gaming events such as the total number of flushes
+ * achieved.
+ *
  * @author Nick Heggø
  * @version 2025.03.03
  */
@@ -13,7 +18,11 @@ public class CardGameEngine {
   private static Hand hand;
   private static int flushCount;
 
-  /** Default constructor */
+  /**
+   * Constructs a new instance of the {@code CardGameEngine} class. This constructor automatically
+   * initializes the game by invoking the {@code startNewGame()} method, which resets the deck,
+   * clears the player's hand, and starts a fresh game session.
+   */
   public CardGameEngine() {
     startNewGame();
   }
@@ -44,10 +53,20 @@ public class CardGameEngine {
     }
   }
 
+  /**
+   * Retrieves the number of cards currently in the player's hand.
+   *
+   * @return the total number of cards in the hand
+   */
   public int getHandSide() {
     return hand.getHandSize();
   }
 
+  /**
+   * Resets the player's hand by creating a new instance of the {@code Hand} class. This method
+   * effectively clears the current set of cards in the hand, preparing it for new cards to be
+   * dealt.
+   */
   public void newHand() {
     hand = new Hand();
   }

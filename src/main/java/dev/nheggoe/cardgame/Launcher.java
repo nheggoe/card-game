@@ -1,6 +1,6 @@
 package dev.nheggoe.cardgame;
 
-import dev.nheggoe.cardgame.frontend.JavaFXMain;
+import dev.nheggoe.cardgame.frontend.CardGameMain;
 
 /**
  * @author Nick Heggø
@@ -8,6 +8,6 @@ import dev.nheggoe.cardgame.frontend.JavaFXMain;
  */
 public class Launcher {
   public static void main(String[] args) {
-    JavaFXMain.main(args);
+    CardGameMain.main(args);
   }
 }

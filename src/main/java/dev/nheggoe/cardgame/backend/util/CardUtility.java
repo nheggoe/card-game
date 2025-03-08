@@ -1,6 +1,6 @@
 package dev.nheggoe.cardgame.backend.util;
 
-import java.util.*;
+import java.util.Random;
 
 /**
  * Utility class for card-related operations. It cannot be instantiated.

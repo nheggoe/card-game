@@ -63,9 +63,10 @@ class HandTest {
             new PlayingCard(CardSuit.CLUBS, CardRank.FIVE),
             new PlayingCard(CardSuit.CLUBS, CardRank.TEN),
             new PlayingCard(CardSuit.CLUBS, CardRank.JACK),
-            new PlayingCard(CardSuit.CLUBS, CardRank.QUEEN),
+            new PlayingCard(CardSuit.SPADES, CardRank.QUEEN),
             new PlayingCard(CardSuit.CLUBS, CardRank.KING)));
 
+    assertTrue(hand.isQueenOfSpadesPresent());
     assertEquals(45, hand.getHandValue());
   }
 
