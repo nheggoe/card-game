@@ -2,11 +2,7 @@ package dev.nheggoe.cardgame.backend.hand;
 
 import dev.nheggoe.cardgame.backend.card.CardSuit;
 import dev.nheggoe.cardgame.backend.card.PlayingCard;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -72,4 +68,8 @@ public class Hand {
     public Set<PlayingCard> getHand() {
         return new HashSet<>(hand);
     }
+
+  public void filterHeart() {
+    hand.removeIf(card -> card.suit() != CardSuit.DIAMONDS);
+  }
 }

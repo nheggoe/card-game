@@ -3,6 +3,8 @@ package dev.nheggoe.cardgame.frontend;
 import dev.nheggoe.cardgame.backend.card.CardSuit;
 import dev.nheggoe.cardgame.backend.card.PlayingCard;
 import dev.nheggoe.cardgame.backend.engine.CardGameEngine;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,9 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Nick Heggø
