@@ -173,7 +173,7 @@ public class JavaFXMain extends Application {
   private void updateCardView() {
     var hand = engine.getHand();
     initCardDisplayArea();
-    hand.getHand().forEach(card -> cardDisplayArea.getChildren().add(createCardView(card)));
+    hand.getCards().forEach(card -> cardDisplayArea.getChildren().add(createCardView(card)));
   }
 
   private Pane createCardView(PlayingCard card) {
