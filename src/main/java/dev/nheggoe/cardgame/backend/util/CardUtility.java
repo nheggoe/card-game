@@ -9,7 +9,6 @@ import java.util.*;
  * @version 2025.03.03
  */
 public class CardUtility {
-
   private static final Random RANDOM = new Random();
 
   /**
