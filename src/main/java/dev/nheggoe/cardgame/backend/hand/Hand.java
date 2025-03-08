@@ -105,7 +105,7 @@ public class Hand {
 
   /**
    * Calculates the total value of the hand by summing up the values of the cards in the hand.
-   * Numeric cards contribute their face value (e.g., 2-10), and face cards (Jack, Queen, King) are
+   * Numeric cards contribute their face value (e.g., 1-10), and face cards (Jack, Queen, King) are
    * assigned a value of 10. The total value is computed based on the rank symbols of the cards.
    *
    * @return the total numerical value of the hand

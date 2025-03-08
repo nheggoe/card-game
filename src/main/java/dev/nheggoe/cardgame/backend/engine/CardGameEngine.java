@@ -10,7 +10,7 @@ import dev.nheggoe.cardgame.backend.hand.Hand;
  * achieved.
  *
  * @author Nick Heggø
- * @version 2025.03.03
+ * @version 2025.03.08
  */
 public class CardGameEngine {
 
@@ -54,12 +54,14 @@ public class CardGameEngine {
   }
 
   /**
-   * Retrieves the number of cards currently in the player's hand.
+   * Retrieves the total numerical value of the player's current hand. The value is calculated by
+   * summing the values of all the cards in the hand, where numeric cards contribute their face
+   * value (e.g., 1-10) and face cards (Jack, Queen, King) are valued at 10.
    *
-   * @return the total number of cards in the hand
+   * @return the total numerical value of the cards in the hand
    */
-  public int getHandSide() {
-    return hand.getHandSize();
+  public int getHandValue() {
+    return hand.getHandValue();
   }
 
   /**

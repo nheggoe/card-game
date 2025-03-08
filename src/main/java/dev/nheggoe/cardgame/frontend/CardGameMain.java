@@ -3,8 +3,11 @@ package dev.nheggoe.cardgame.frontend;
 import dev.nheggoe.cardgame.backend.card.CardSuit;
 import dev.nheggoe.cardgame.backend.card.PlayingCard;
 import dev.nheggoe.cardgame.backend.engine.CardGameEngine;
-import java.util.logging.Level;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -33,14 +36,17 @@ import javafx.stage.Stage;
 public class CardGameMain extends Application {
 
   private static final Logger LOGGER = Logger.getLogger(CardGameMain.class.getName());
-  private static final CardGameEngine engine = new CardGameEngine();
 
+  private final CardGameEngine engine;
   private final BorderPane root;
   private final FlowPane centerPanel;
   private final VBox rightPanel;
   private final GridPane bottomPanel;
 
   private TextField remainingCardField;
+  private TextField sumOfHandValueField;
+  private TextField cardsOfHeartsField;
+  private TextField queenOfSpadesField;
   private TextField flushCountField;
   private TextField flushField;
 
@@ -52,11 +58,12 @@ public class CardGameMain extends Application {
    * <p>The initialized components are:
    * <li>A {@code BorderPane} instance as the root layout.
    * <li>A {@code FlowPane} for the center panel.
-   * <li>A {@code VBox} for the right panel with a vertical spacing of 20.
+   * <li>A {@code VBox} for the right panel with vertical spacing of 20.
    * <li>A {@code GridPane} for the bottom panel.
    */
   public CardGameMain() {
     super();
+    engine = new CardGameEngine();
     root = new BorderPane();
     centerPanel = new FlowPane();
     rightPanel = new VBox(20);
@@ -83,94 +90,21 @@ public class CardGameMain extends Application {
     initializeStage(primaryStage);
   }
 
-  private void initializeRightPanel() {
-    rightPanel.setPadding(new Insets(10));
-    rightPanel.setAlignment(Pos.TOP_CENTER);
-    rightPanel.getChildren().addAll(getDealHandButton(), getCheckHandButton());
-  }
-
-  private void initializeBottomPanel() {
-    bottomPanel.setHgap(10);
-    bottomPanel.setVgap(10);
-    bottomPanel.setPadding(new Insets(20, 0, 0, 0));
-    bottomPanel.add(getRemainingCardLabel(), 0, 0);
-    bottomPanel.add(remainingCardField, 1, 0);
-
-    bottomPanel.add(getFlushCountLabel(), 2, 0);
-    bottomPanel.add(flushCountField, 3, 0);
-
-    bottomPanel.add(getFlushLabel(), 0, 1);
-    bottomPanel.add(flushField, 1, 1);
+  private Button getDealHandButton() {
+    Button dealHandButton = new Button("Deal Hand");
+    dealHandButton.setOnAction(
+        e -> {
+          dealHand();
+          updateCardView();
+          checkHand();
+        });
+    return dealHandButton;
   }
 
   private Button getCheckHandButton() {
     Button checkHandButton = new Button("Check Hand");
     checkHandButton.setOnAction(e -> checkHand());
     return checkHandButton;
-  }
-
-  private Button getDealHandButton() {
-    Button dealHandButton = new Button("Deal Hand");
-    dealHandButton.setOnAction(
-        e -> {
-          dealHand();
-          updateCardCount();
-          updateCardView();
-          updateFlushCount();
-        });
-    return dealHandButton;
-  }
-
-  private void initializeStage(Stage primaryStage) {
-    primaryStage.setScene(new Scene(root, 700, 500));
-    primaryStage.setTitle("Flush Card Game");
-    primaryStage.show();
-  }
-
-  private void initializeLayout() {
-    root.setPadding(new Insets(20));
-    root.setCenter(centerPanel);
-    root.setBottom(bottomPanel);
-    root.setRight(rightPanel);
-  }
-
-  private Label getFlushLabel() {
-    Label flushLabel = new Label("Flush:");
-    flushField = new TextField("Yes/NO");
-    flushField.setEditable(false);
-    flushField.setPrefWidth(80);
-    return flushLabel;
-  }
-
-  private Label getFlushCountLabel() {
-    Label flushCountLabel = new Label("Flush count:");
-    flushCountField = new TextField("%d".formatted(engine.getFlushCount()));
-    flushCountField.setEditable(false);
-    flushCountField.setPrefWidth(150);
-    return flushCountLabel;
-  }
-
-  private Label getRemainingCardLabel() {
-    Label remainingCardLabel = new Label("Card Stock:");
-    remainingCardField = new TextField("%d".formatted(engine.getRemainingCardCount()));
-    remainingCardField.setEditable(false);
-    remainingCardField.setPrefWidth(80);
-    return remainingCardLabel;
-  }
-
-  private void updateCardCount() {
-    remainingCardField = new TextField("%d".formatted(engine.getRemainingCardCount()));
-    LOGGER.log(
-        Level.INFO, "There are %d cards remaining.".formatted(engine.getRemainingCardCount()));
-    remainingCardField.setEditable(false);
-    remainingCardField.setPrefWidth(80);
-    bottomPanel.add(remainingCardField, 1, 0);
-  }
-
-  private void updateFlushCount() {
-    flushCountField = new TextField("%d".formatted(engine.getFlushCount()));
-    flushCountField.setEditable(false);
-    flushCountField.setPrefWidth(150);
   }
 
   private void initializeCenterPanel() {
@@ -185,24 +119,89 @@ public class CardGameMain extends Application {
     centerPanel.getChildren().add(placeholderText);
   }
 
+  private void initializeRightPanel() {
+    rightPanel.setPadding(new Insets(10));
+    rightPanel.setAlignment(Pos.TOP_CENTER);
+    rightPanel.getChildren().addAll(getDealHandButton(), getCheckHandButton());
+  }
+
+  private void initializeBottomPanel() {
+    initializeTextFields();
+
+    bottomPanel.setHgap(10);
+    bottomPanel.setVgap(10);
+    bottomPanel.setPadding(new Insets(20, 0, 0, 0));
+
+    bottomPanel.add(new Label("Sum of the faces:"), 0, 0);
+    bottomPanel.add(sumOfHandValueField, 1, 0);
+    bottomPanel.add(new Label("Cards of hearts:"), 2, 0);
+    bottomPanel.add(cardsOfHeartsField, 3, 0);
+    bottomPanel.add(new Label("Flush count:"), 4, 0);
+    bottomPanel.add(flushCountField, 5, 0);
+
+    bottomPanel.add(new Label("Flush:"), 0, 1);
+    bottomPanel.add(flushField, 1, 1);
+    bottomPanel.add(new Label("Queen of Spades:"), 2, 1);
+    bottomPanel.add(queenOfSpadesField, 3, 1);
+    bottomPanel.add(new Label("Remaining cards:"), 4, 1);
+    bottomPanel.add(remainingCardField, 5, 1);
+  }
+
+  private void initializeLayout() {
+    root.setPadding(new Insets(20));
+    root.setCenter(centerPanel);
+    root.setBottom(bottomPanel);
+    root.setRight(rightPanel);
+  }
+
+  private void initializeStage(Stage primaryStage) {
+    primaryStage.setScene(new Scene(root, 700, 500));
+    primaryStage.setTitle("Flush Card Game");
+    primaryStage.show();
+  }
+
+  private void initializeTextFields() {
+
+    sumOfHandValueField = new TextField("0");
+    cardsOfHeartsField = new TextField("");
+    flushCountField = new TextField("%d".formatted(engine.getFlushCount()));
+    flushField = new TextField("Yes/NO");
+    queenOfSpadesField = new TextField("Yes/No");
+    remainingCardField = new TextField("%d".formatted(engine.getRemainingCardCount()));
+
+    List<TextField> fields =
+        new ArrayList<>(
+            Arrays.asList(
+                sumOfHandValueField,
+                cardsOfHeartsField,
+                flushCountField,
+                flushField,
+                queenOfSpadesField,
+                remainingCardField));
+
+    fields.forEach(
+        field -> {
+          field.setEditable(false);
+          field.setPrefWidth(120);
+        });
+  }
+
   private void checkHand() {
-    boolean hasFlush = engine.isFlush();
-    if (hasFlush) {
-      LOGGER.log(Level.INFO, "-------- Flush! ---------");
-    }
-    flushField.setText(hasFlush ? "Yes" : "No");
+    sumOfHandValueField.setText(String.valueOf(engine.getHandValue()));
+    cardsOfHeartsField.setText(
+        engine.getHand().getCardsOfSuit(CardSuit.HEARTS).stream()
+            .map(PlayingCard::getCardRepresentation)
+            .collect(Collectors.joining(" ")));
+    flushCountField.setText("%d".formatted(engine.getFlushCount()));
+    flushField.setText(engine.isFlush() ? "Yes" : "No");
+    queenOfSpadesField.setText(engine.getHand().isQueenOfSpadesPresent() ? "Yes" : "No");
+    remainingCardField.setText("%d".formatted(engine.getRemainingCardCount()));
   }
 
   private void dealHand() {
     engine.newHand();
-    int cardsToDraw;
-    if (engine.getHandSide() == 0) {
-      cardsToDraw = 5;
-    } else {
-      cardsToDraw = 1;
-    }
     try {
-      engine.drawCards(cardsToDraw);
+      engine.drawCards(5);
     } catch (IllegalStateException e) {
       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
       alert.setTitle("Game Result");
@@ -220,7 +219,6 @@ public class CardGameMain extends Application {
                 }
               });
     }
-    LOGGER.log(Level.INFO, "Drawn %d cards!".formatted(cardsToDraw));
   }
 
   private void updateCardView() {
